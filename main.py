@@ -1,49 +1,63 @@
-from flask import Flask, jsonify
-import sys
 import os
+import sys
+from datetime import datetime
+from typing import Any, Dict
 
-app = Flask(__name__)
+from fastapi import FastAPI
+
+app = FastAPI(
+    title="umami-badge API", description="Simple API for version and health checks"
+)
+
 
 # Get the current version from the project configuration
 def get_version():
     # In a real implementation, this could read from package metadata
     return "0.1.0"
 
-@app.route('/api/version', methods=['GET'])
-def api_version():
+
+@app.get("/api/version", response_model=Dict[str, Any])
+async def api_version():
     """Return the current version of the service"""
     version_info = {
-        'version': get_version(),
-        'service': 'umami-badge',
-        'python_version': sys.version,
-        'environment': os.environ.get('ENVIRONMENT', 'development')
+        "version": get_version(),
+        "service": "umami-badge",
+        "python_version": sys.version,
+        "environment": os.environ.get("ENVIRONMENT", "development"),
     }
-    return jsonify(version_info)
+    return version_info
 
-@app.route('/api/health', methods=['GET'])
-def api_health():
+
+@app.get("/api/health", response_model=Dict[str, Any])
+async def api_health():
     """Return the health status of the service"""
     health_status = {
-        'status': 'healthy',
-        'service': 'umami-badge',
-        'version': get_version()
+        "status": "healthy",
+        "service": "umami-badge",
+        "version": get_version(),
     }
-    return jsonify(health_status)
+    return health_status
 
-@app.route('/api/status', methods=['GET'])
-def api_status():
+
+@app.get("/api/status", response_model=Dict[str, Any])
+async def api_status():
     """Return a combined status response"""
     status_info = {
-        'status': 'running',
-        'version': get_version(),
-        'service': 'umami-badge',
-        'timestamp': __import__('datetime').datetime.now().isoformat()
+        "status": "running",
+        "version": get_version(),
+        "service": "umami-badge",
+        "timestamp": datetime.now().isoformat(),
     }
-    return jsonify(status_info)
+    return status_info
 
-def main():
-    app.run(host='0.0.0.0', port=8000, debug=True)
+
+# Optional: Basic home endpoint
+@app.get("/")
+async def root():
+    return {"message": "Welcome to umami-badge API", "status": "running"}
 
 
 if __name__ == "__main__":
-    main()
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)

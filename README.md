@@ -1,12 +1,13 @@
 # umami-badge
 
-A simple web service that provides API endpoints for version information and health status checking.
+A simple web service that provides API endpoints for version information and health status checking, built with FastAPI.
 
 ## Features
 
 - API endpoint to retrieve software version information
 - Health check endpoint to monitor service status
 - Additional status endpoint with timestamp
+- Automatic interactive API documentation with Swagger UI
 
 ## API Endpoints
 
@@ -44,7 +45,7 @@ Returns the combined status information with a timestamp.
   "status": "running",
   "version": "0.1.0",
   "service": "umami-badge",
-  "timestamp": "2025-12-08T08:32:36.605254"
+  "timestamp": "2025-12-08T10:59:02.112085"
 }
 ```
 
@@ -61,6 +62,12 @@ Returns the combined status information with a timestamp.
    ```
 
 The service will be available at `http://localhost:8000`.
+
+## API Documentation
+
+FastAPI automatically provides interactive API documentation:
+- Swagger UI: `http://localhost:8000/docs`
+- ReDoc: `http://localhost:8000/redoc`
 
 ## Environment Variables
 
