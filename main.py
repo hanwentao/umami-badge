@@ -118,11 +118,14 @@ async def api_visits(
     Fetch visit count from Umami for a given domain and return in shields.io format
     """
     try:
-        # Find the website ID for the given domain from the TOML configuration
+        # Find the website ID and bias_count for the given domain from the TOML configuration
         website_id = None
+        bias_count = 0  # Default bias is 0 if not specified in config
+
         for domain_config in config.get("domains", []):
             if domain_config.get("domain") == domain:
                 website_id = domain_config.get("website_id")
+                bias_count = domain_config.get("bias_count", 0)  # Default to 0 if not specified
                 break
 
         # If no mapping found in TOML config, try to use domain as websiteId directly
@@ -136,11 +139,14 @@ async def api_visits(
         # Extract visit count - adjust based on the actual Umami API response format
         visits = umami_data.get("visits", 0)
 
+        # Apply the bias count to the visit count
+        adjusted_visits = visits + bias_count
+
         # Format response in shields.io compatible format
         shields_io_format = {
             "schemaVersion": 1,
             "label": f"{domain} visits",
-            "message": f"{visits}",
+            "message": f"{adjusted_visits}",
             "color": "green",
             "isError": False,
             "cacheSeconds": 300,  # Cache for 5 minutes

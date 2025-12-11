@@ -86,19 +86,10 @@ curl "http://localhost:8000/api/visits?domain=example.com"
    # Edit .env with your actual values
    ```
 
-3. Create a config.toml file with your website configuration (see config.toml for the format):
-   ```toml
-   # Configuration for umami-badge
-   # Website-specific settings go here
-
-   # Domain to website ID mappings
-   [[domains]]
-   domain = "example.com"
-   website_id = "12345"
-
-   [[domains]]
-   domain = "another-domain.com"
-   website_id = "67890"
+3. Create a config.toml file with your website configuration (see config.toml.example for the format):
+   ```bash
+   cp config.toml.example config.toml
+   # Edit config.toml with your actual values
    ```
 
 4. Run the service:
@@ -131,17 +122,22 @@ Website-specific settings are stored in a TOML file:
 # Configuration for umami-badge
 # Website-specific settings go here
 
-# Domain to website ID mappings
+# Domain to website ID mappings with bias count
 [[domains]]
 domain = "example.com"
 website_id = "12345"
+bias_count = 100
 
 [[domains]]
 domain = "another-domain.com"
 website_id = "67890"
+bias_count = 50
 
 # Additional domains can be added as needed
 # [[domains]]
 # domain = "third-domain.com"
 # website_id = "11111"
+# bias_count = 0
 ```
+
+The `bias_count` field allows you to add a fixed number to the actual visit count returned by Umami for each domain.
