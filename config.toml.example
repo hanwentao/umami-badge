@@ -1,0 +1,16 @@
+# Configuration for umami-badge
+# Website-specific settings go here
+
+# Domain to website ID mappings
+[[domains]]
+domain = "example.com"
+website_id = "12345"
+
+[[domains]]
+domain = "another-domain.com"
+website_id = "67890"
+
+# Additional domains can be added as needed
+# [[domains]]
+# domain = "third-domain.com"
+# website_id = "11111"

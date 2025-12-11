@@ -5,11 +5,21 @@ from datetime import datetime
 from typing import Any, Dict
 
 import httpx
+import toml
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query
 
 # Load environment variables from .env file
 load_dotenv()
+
+# Load website configuration from TOML file
+config_file = os.environ.get("CONFIG_FILE", "config.toml")
+try:
+    with open(config_file, "r") as f:
+        config = toml.load(f)
+except FileNotFoundError:
+    # If config file doesn't exist, create a default config
+    config = {"domains": []}
 
 app = FastAPI(
     title="umami-badge API", description="Simple API for getting visit data from Umami"
@@ -108,19 +118,14 @@ async def api_visits(
     Fetch visit count from Umami for a given domain and return in shields.io format
     """
     try:
-        # Map domain to website ID - in a real setup this would be configured in env vars
-        domain_to_website_map = os.environ.get("DOMAIN_TO_WEBSITE_MAP", "")
+        # Find the website ID for the given domain from the TOML configuration
         website_id = None
+        for domain_config in config.get("domains", []):
+            if domain_config.get("domain") == domain:
+                website_id = domain_config.get("website_id")
+                break
 
-        # Parse domain to website ID mapping from environment variable
-        if domain_to_website_map:
-            for mapping in domain_to_website_map.split(","):
-                parts = mapping.strip().split(":")
-                if len(parts) == 2 and parts[0] == domain:
-                    website_id = parts[1]
-                    break
-
-        # If no mapping found in environment variable, try to use domain as websiteId directly
+        # If no mapping found in TOML config, try to use domain as websiteId directly
         # (this is a fallback and not recommended for production)
         if not website_id:
             website_id = domain
@@ -134,7 +139,7 @@ async def api_visits(
         # Format response in shields.io compatible format
         shields_io_format = {
             "schemaVersion": 1,
-            "label": "visits",
+            "label": f"{domain} visits",
             "message": f"{visits}",
             "color": "green",
             "isError": False,
@@ -162,6 +167,10 @@ if __name__ == "__main__":
 
     # Check if we're in development mode
     environment = os.environ.get("ENVIRONMENT", "production")
-    reload = environment.lower() == "development"
 
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=reload)
+    if environment.lower() == "development":
+        # For development with reload, we need to pass the module as a string
+        uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    else:
+        # For production, run the app directly
+        uvicorn.run(app, host="0.0.0.0", port=8000, reload=False)

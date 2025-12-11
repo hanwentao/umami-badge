@@ -80,13 +80,28 @@ curl "http://localhost:8000/api/visits?domain=example.com"
    uv sync
    ```
 
-2. Create a .env file with your configuration (see .env.example for the format):
+2. Create a .env file with your environment configuration (see .env.example for the format):
    ```bash
    cp .env.example .env
    # Edit .env with your actual values
    ```
 
-3. Run the service:
+3. Create a config.toml file with your website configuration (see config.toml for the format):
+   ```toml
+   # Configuration for umami-badge
+   # Website-specific settings go here
+
+   # Domain to website ID mappings
+   [[domains]]
+   domain = "example.com"
+   website_id = "12345"
+
+   [[domains]]
+   domain = "another-domain.com"
+   website_id = "67890"
+   ```
+
+4. Run the service:
    ```bash
    python main.py
    ```
@@ -99,9 +114,34 @@ FastAPI automatically provides interactive API documentation:
 - Swagger UI: `http://localhost:8000/docs`
 - ReDoc: `http://localhost:8000/redoc`
 
-## Environment Variables
+## Configuration
 
-- `ENVIRONMENT` (optional): Set to change the environment name (default: "development")
+### Environment Variables (.env file)
+
+- `ENVIRONMENT` (optional): Set to change the environment name (default: "development"). When set to "development", enables auto-reload.
 - `UMAMI_URL` (required for /api/visits): URL of your Umami instance
 - `UMAMI_TOKEN` (required for /api/visits): Pre-obtained Umami API token for authentication
-- `DOMAIN_TO_WEBSITE_MAP` (optional): Comma-separated mappings of domain to website ID (format: "domain1:id1,domain2:id2")
+- `CONFIG_FILE` (optional): Path to the configuration TOML file (default: "config.toml")
+
+### Website Configuration (config.toml file)
+
+Website-specific settings are stored in a TOML file:
+
+```toml
+# Configuration for umami-badge
+# Website-specific settings go here
+
+# Domain to website ID mappings
+[[domains]]
+domain = "example.com"
+website_id = "12345"
+
+[[domains]]
+domain = "another-domain.com"
+website_id = "67890"
+
+# Additional domains can be added as needed
+# [[domains]]
+# domain = "third-domain.com"
+# website_id = "11111"
+```
