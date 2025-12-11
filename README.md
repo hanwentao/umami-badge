@@ -105,9 +105,37 @@ FastAPI automatically provides interactive API documentation:
 - Swagger UI: `http://localhost:8000/docs`
 - ReDoc: `http://localhost:8000/redoc`
 
-## Configuration
+## Deployment
 
-### Environment Variables (.env file)
+### Docker
+
+You can deploy the application using Docker or Docker Compose.
+
+#### Using Docker
+
+Build the image:
+```bash
+docker build -t umami-badge .
+```
+
+Run the container:
+```bash
+docker run -p 8000:8000 \
+  -v $(pwd)/config.toml:/app/config.toml \
+  -v $(pwd)/.env:/app/.env \
+  --env ENVIRONMENT=production \
+  umami-badge
+```
+
+#### Using Docker Compose
+
+```bash
+docker-compose up -d
+```
+
+### Configuration
+
+#### Environment Variables (.env file)
 
 - `ENVIRONMENT` (optional): Set to change the environment name (default: "development"). When set to "development", enables auto-reload.
 - `UMAMI_URL` (required for /api/visits): URL of your Umami instance
