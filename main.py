@@ -145,7 +145,7 @@ async def api_visits(
         # Format response in shields.io compatible format
         shields_io_format = {
             "schemaVersion": 1,
-            "label": f"{domain} visits",
+            "label": "visits",
             "message": f"{adjusted_visits}",
             "color": "green",
             "isError": False,

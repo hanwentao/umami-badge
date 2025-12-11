@@ -65,7 +65,7 @@ curl "http://localhost:8000/api/visits?domain=example.com"
 ```json
 {
   "schemaVersion": 1,
-  "label": "example.com visits",
+  "label": "visits",
   "message": "123",
   "color": "green",
   "isError": false,
