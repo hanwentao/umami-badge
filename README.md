@@ -1,11 +1,12 @@
 # umami-badge
 
-A simple web service that provides API endpoints for version information and health status checking, built with FastAPI.
+A simple web service that provides API endpoints for version information, health status checking, and Umami visit statistics, built with FastAPI.
 
 ## Features
 
 - API endpoint to retrieve software version information
 - Health check endpoint to monitor service status
+- Endpoint to fetch website visit counts from Umami
 - Additional status endpoint with timestamp
 - Automatic interactive API documentation with Swagger UI
 
@@ -49,6 +50,29 @@ Returns the combined status information with a timestamp.
 }
 ```
 
+### GET /api/visits
+Fetch visit count from Umami for a given domain and return in shields.io format.
+
+**Parameters:**
+- `domain` (required): The domain to fetch visit data for
+
+**Example:**
+```bash
+curl "http://localhost:8000/api/visits?domain=example.com"
+```
+
+**Response (shields.io format):**
+```json
+{
+  "schemaVersion": 1,
+  "label": "example.com visits",
+  "message": "123",
+  "color": "green",
+  "isError": false,
+  "cacheSeconds": 300
+}
+```
+
 ## Setup
 
 1. Install dependencies:
@@ -56,7 +80,13 @@ Returns the combined status information with a timestamp.
    uv sync
    ```
 
-2. Run the service:
+2. Create a .env file with your configuration (see .env.example for the format):
+   ```bash
+   cp .env.example .env
+   # Edit .env with your actual values
+   ```
+
+3. Run the service:
    ```bash
    python main.py
    ```
@@ -72,3 +102,6 @@ FastAPI automatically provides interactive API documentation:
 ## Environment Variables
 
 - `ENVIRONMENT` (optional): Set to change the environment name (default: "development")
+- `UMAMI_URL` (required for /api/visits): URL of your Umami instance
+- `UMAMI_TOKEN` (required for /api/visits): Pre-obtained Umami API token for authentication
+- `DOMAIN_TO_WEBSITE_MAP` (optional): Comma-separated mappings of domain to website ID (format: "domain1:id1,domain2:id2")
