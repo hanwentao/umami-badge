@@ -143,11 +143,13 @@ async def api_visits(
         adjusted_visits = visits + bias_count
 
         # Format response in shields.io compatible format
+        # Get badge color from environment variable, default to "brightgreen"
+        badge_color = os.environ.get("BADGE_COLOR", "brightgreen")
         shields_io_format = {
             "schemaVersion": 1,
             "label": "visits",
             "message": f"{adjusted_visits}",
-            "color": "green",
+            "color": badge_color,
             "isError": False,
             "cacheSeconds": 300,  # Cache for 5 minutes
         }

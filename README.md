@@ -140,6 +140,7 @@ docker-compose up -d
 - `ENVIRONMENT` (optional): Set to change the environment name (default: "development"). When set to "development", enables auto-reload.
 - `UMAMI_URL` (required for /api/visits): URL of your Umami instance
 - `UMAMI_TOKEN` (required for /api/visits): Pre-obtained Umami API token for authentication
+- `BADGE_COLOR` (optional): Color of the badge (default: "brightgreen"). Common values include "brightgreen", "green", "red", "blue", "yellow", "orange", etc.
 - `CONFIG_FILE` (optional): Path to the configuration TOML file (default: "config.toml")
 
 ### Website Configuration (config.toml file)
