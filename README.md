@@ -94,7 +94,7 @@ curl "http://localhost:8000/api/visits?domain=example.com"
 
 4. Run the service:
    ```bash
-   python main.py
+   uv run main.py
    ```
 
 The service will be available at `http://localhost:8000`.
