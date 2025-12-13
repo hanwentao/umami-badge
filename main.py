@@ -125,7 +125,9 @@ async def api_visits(
         for domain_config in config.get("domains", []):
             if domain_config.get("domain") == domain:
                 website_id = domain_config.get("website_id")
-                bias_count = domain_config.get("bias_count", 0)  # Default to 0 if not specified
+                bias_count = domain_config.get(
+                    "bias_count", 0
+                )  # Default to 0 if not specified
                 break
 
         # If no mapping found in TOML config, try to use domain as websiteId directly
