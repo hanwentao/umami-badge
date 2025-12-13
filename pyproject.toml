@@ -1,7 +1,7 @@
 [project]
 name = "umami-badge"
 version = "0.1.0"
-description = "Add your description here"
+description = "A web service that provides API endpoints for creating badges with website visit statistics from Umami Analytics, compatible with shields.io format"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
