@@ -1,8 +1,8 @@
 services:
-  umami-badge:
+  app:
     build: .
     ports:
-      - "8000:8000"
+      - "${UMAMI_BADGE_PORT:-8000}:8000"
     environment:
       - ENVIRONMENT=production
     volumes:
