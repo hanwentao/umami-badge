@@ -1,5 +1,11 @@
 FROM python:3.14-slim
 
+# For health check
+RUN set -eux; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends curl ; \
+    apt-get dist-clean
+
 WORKDIR /app
 
 # Copy project files
